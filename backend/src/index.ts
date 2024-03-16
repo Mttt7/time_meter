@@ -26,7 +26,7 @@ app.use(cors());
 //Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/googleCalendar', googleCalendarRoutes);
-app
+
 
 // Start the server
 app.listen(3000, () => console.log('Server running at 3000'));

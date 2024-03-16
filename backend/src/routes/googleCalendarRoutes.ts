@@ -9,6 +9,11 @@ router.route('/calendars')
 router.route('/calendars/active')
     .get(googleCalendarController.getActiveCalendars)
 
+router.route('/calendars/:calendarId')
+
+router.route('/calendars/:calendarId/:scope/:date')
+    .get(googleCalendarController.getTime)
+
 
 router.route('/events')
     .get(googleCalendarController.getEvents)

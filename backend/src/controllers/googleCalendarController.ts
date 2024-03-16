@@ -84,3 +84,61 @@ export const setCalendarActive = async (req: Request, res: Response) => {
         res.send('Error');
     }
 }
+
+// Accepts date and returns total time spent on that day or week in minutes
+export const getTime = async (req: Request, res: Response) => {
+    const calendarId = req.params.calendarId
+    const scope = req.params.scope // 'day' or 'week' or 'month' or 'year'
+    const date = req.params.date
+
+    const oauth2Client = Oauth2ClientManager.getInstance().getOauth2Client();
+    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+    let startDate: Date;
+    let endDate: Date;
+
+    if (scope === 'week') {
+        startDate = new Date(date);
+        endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 7);
+    } else if (scope === 'day') {
+        startDate = new Date(date);
+        endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 1);
+    } else if (scope === 'month') {
+        startDate = new Date(date);
+        endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 30);
+    } else if (scope === 'year') {
+        startDate = new Date(date);
+        endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 365);
+    }
+
+
+    const events = await calendar.events.list({
+        calendarId,
+        timeMin: startDate.toISOString(),
+        timeMax: endDate.toISOString(),
+        singleEvents: true,
+        orderBy: 'startTime'
+    })
+
+    let suffix = 'min'
+    const extractedTime: number[] = events.data.items.map((event: any) => {
+        if (suffix === 'min') {
+            const summary: string = event.summary || '';
+            const match = summary.match(/<(\d+)min>/);
+            return match ? parseInt(match[1]) : null;
+        } else {
+            const summary: string = event.summary || '';
+            const match = summary.match(/<(\d+)>/);
+            return match ? parseInt(match[1]) : null;
+        }
+
+    })
+    const totalMinutes = extractedTime.reduce((acc, time) => {
+        return acc + time
+    }, 0)
+    return res.json({ totalMinutes })
+}
