@@ -19,24 +19,15 @@ export const getAuthURL = (req: Request, res: Response) => {
 }
 
 export const handleCallback = (req: Request, res: Response) => {
-    // Extract the code from the query parameter
     const code = req.query.code;
-    // Exchange the code for tokens
     const oauth2Client = Oauth2ClientManager.getInstance().getOauth2Client();
     oauth2Client.getToken(code as string, (err, tokens) => {
         if (err) {
-            // Handle error if token exchange fails
             console.error('Couldn\'t get token', err);
             res.send('Error');
             return;
         }
-        // Set the credentials for the Google API client
-
-
-        //oauth2Client.setCredentials(tokens);
-
         Oauth2ClientManager.getInstance().setCredentials(tokens);
-
 
         google.people('v1').people.get({
             resourceName: 'people/me',
@@ -53,7 +44,6 @@ export const handleCallback = (req: Request, res: Response) => {
             userService.findOrCreateUser(email);
         }
         )
-        // Notify the user of a successful login
         res.send('Successfully logged in');
     });
 

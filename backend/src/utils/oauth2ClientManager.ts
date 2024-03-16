@@ -1,18 +1,3 @@
-// import { google } from 'googleapis';
-
-// const getOauth2Client = () => {
-//     return new google.auth.OAuth2(
-//         process.env.CLIENT_ID,
-//         process.env.SECRET_ID,
-//         process.env.REDIRECT
-//     );
-
-// }
-
-
-
-// export default getOauth2Client;
-
 import { OAuth2Client, Credentials } from 'google-auth-library';
 
 class Oauth2ClientManager {
