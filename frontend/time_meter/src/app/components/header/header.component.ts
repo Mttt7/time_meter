@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GoogleCalendarService } from '../../services/google-calendar.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,13 +10,12 @@ import { GoogleCalendarService } from '../../services/google-calendar.service';
 export class HeaderComponent {
 
 
-  constructor(private googleService: GoogleCalendarService) { }
+  constructor(private googleService: GoogleCalendarService,
+    private authService: AuthService,
+  ) { }
 
   login() {
-    this.googleService.login().subscribe((res) => {
-      console.log(res);
-      window.open(res.url)
-    })
-
+    this.authService.login();
   }
+
 }

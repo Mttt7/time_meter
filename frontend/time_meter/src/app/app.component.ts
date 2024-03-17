@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GoogleCalendarService } from './services/google-calendar.service';
 import { Router } from '@angular/router';
 import { Calendar } from './models/calendar';
+import { AuthService } from './services/auth.service';
 
 
 
@@ -11,14 +12,13 @@ import { Calendar } from './models/calendar';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  calendars: Calendar[] = [];
+  constructor() { }
 
+  ngOnInit(): void {
 
-  constructor(private googleService: GoogleCalendarService, private router: Router) { }
-
-
+  }
 
 
 }

@@ -12,30 +12,35 @@ interface LoginResponse {
 })
 export class GoogleCalendarService {
 
-  serverUrl = 'http://localhost:3000/api/v1/';
+
+  serverUrl = 'http://localhost:3000/api/v1/googleCalendar/';
 
   calendars: Calendar[] = []
 
 
   constructor(private http: HttpClient) { }
 
-
-
-  login(): Observable<LoginResponse> {
-    return this.http.get<LoginResponse>(this.serverUrl);
-  }
-
-  populateCalendars() {
-    this.http.get<Calendar[]>('http://localhost:3000/api/v1/calendars').subscribe((calendars) => {
-      this.calendars = calendars;
-    })
-  }
-
   getAllCalendars(): Observable<Calendar[]> {
-    return of(this.calendars)
+    return this.http.get<Calendar[]>(this.serverUrl + 'calendars');
   }
 
   getActiveCalendars(): Observable<Calendar[]> {
-    return of(this.calendars.filter(calendar => calendar.active))
+    return this.http.get<Calendar[]>(this.serverUrl + 'calendars/active');
   }
+
+  toggleCalendarActive(calendar: Calendar): Observable<any> {
+    return this.http.patch(this.serverUrl + 'calendars?calendarId=' + calendar.id, {});
+  }
+
+  getTime(calendarId: string, scope: string, date: string): Observable<GetTimeResponse> {
+    return this.http.get<GetTimeResponse>(this.serverUrl + `calendars/${calendarId}/${scope}/${date}`);
+  }
+}
+
+interface GetTimeResponse {
+  time: {
+    date: string,
+    time: number
+  }[],
+  totalMinutes: any
 }

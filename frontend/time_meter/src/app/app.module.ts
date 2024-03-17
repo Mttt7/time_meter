@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +14,7 @@ import { GoalPreviewComponent } from './components/goal-preview/goal-preview.com
 import { HeaderComponent } from './components/header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     SelectButtonModule,
-    InputSwitchModule
+    InputSwitchModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

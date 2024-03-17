@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GoogleCalendarService } from '../../services/google-calendar.service';
 import { Calendar } from '../../models/calendar';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-active-calendars',
@@ -15,29 +16,43 @@ export class ActiveCalendarsComponent {
   stateOptions: any[] = [{ label: 'Active', value: 'active' }, { label: 'All', value: 'all' }];
   value: string = 'active';
 
-  constructor(private googleService: GoogleCalendarService) { }
+  constructor(private googleService: GoogleCalendarService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.getAllCalendars();
-    this.getActiveCalendars();
+    if (this.authService.isUserLogged()) {
+      this.getActiveCalendars();
+    }
   }
 
+  onModeChanged() {
+    if (this.value === 'active') {
+      console.log('active');
+      this.getActiveCalendars();
+    } else if (this.value === 'all') {
+      console.log('all');
+      this.getAllCalendars();
+    }
+  }
+
+  onActiveChanged(calendar: Calendar) {
+    this.googleService.toggleCalendarActive(calendar).subscribe(() => {
+    })
+  }
+
+
+
   getAllCalendars() {
-    this.googleService.getAllCalendars().subscribe((res) => {
-      console.log(res)
-      this.allCalendars = res;
+    this.googleService.getAllCalendars().subscribe(calendars => {
+      this.allCalendars = calendars;
+
     })
   }
   getActiveCalendars() {
-    this.googleService.getActiveCalendars().subscribe((res) => {
-      console.log(res)
-      this.activeCalendars = res;
+    this.googleService.getActiveCalendars().subscribe(calendars => {
+      this.activeCalendars = calendars;
     })
   }
 
-  reloadCalendars() {
-    this.googleService.populateCalendars();
-    this.getActiveCalendars();
-    this.getAllCalendars();
-  }
+
 }

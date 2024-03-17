@@ -1,1 +1,8 @@
-<div class="main">elo</div>
+<div class="main">
+
+    <div id="chart" *ngIf="!loading">
+        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!"
+            [plotOptions]="chartOptions.plotOptions!" [responsive]="chartOptions.responsive!"
+            [xaxis]="chartOptions.xaxis!" [legend]="chartOptions.legend!" [fill]="chartOptions.fill!"></apx-chart>
+    </div>
+</div>

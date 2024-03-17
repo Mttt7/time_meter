@@ -1,11 +1,7 @@
 <div class="main">
-    <div class="reload" (click)="reloadCalendars()">
-        <i class="fa-solid fa-rotate-right" style="font-size: 1.4rem;"></i>
-    </div>
-
     <div class="calendars">
-        <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
-            optionValue="value"></p-selectButton>
+        <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"
+            (ngModelChange)="onModeChanged()"></p-selectButton>
 
     </div>
 
@@ -16,7 +12,8 @@
     </div>
     <div class="all-calendars" *ngIf="value==='all'">
         <div *ngFor="let calendar of allCalendars" class="calendar">
-            {{calendar.summary}} <p-inputSwitch [(ngModel)]="calendar.active"></p-inputSwitch>
+            {{calendar.summary}} <p-inputSwitch [(ngModel)]="calendar.active"
+                (ngModelChange)="onActiveChanged(calendar)"></p-inputSwitch>
         </div>
     </div>
 
