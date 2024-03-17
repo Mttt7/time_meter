@@ -1,7 +1,14 @@
 @layer base, reset, primeng, app;
 
 
+
 @layer reset {
+
+
+    * {
+        font-family: "Tilt Neon", sans-serif;
+    }
+
 
     html,
     body,

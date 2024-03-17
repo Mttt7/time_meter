@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
-
+import { ButtonModule } from 'primeng/button';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,7 +34,8 @@ import { WeekPickerComponent } from './components/week-picker/week-picker.compon
     FormsModule,
     SelectButtonModule,
     InputSwitchModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

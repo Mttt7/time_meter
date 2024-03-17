@@ -1,3 +1,10 @@
 <div class="main">
-    <div (click)="login()">login</div>
+    <div class="hero">
+        <div>TIME METER</div>
+
+        <div style="color: rgb(214, 81, 81);">PRO</div>
+    </div>
+    <p-button label="Login" (click)="login()" size="small" *ngIf="!userLogged"></p-button>
+    <p-button label="Logout" (click)="logout()" size="small" *ngIf="userLogged"></p-button>
+
 </div>

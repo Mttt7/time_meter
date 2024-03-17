@@ -50,11 +50,11 @@ export const handleCallback = (req: Request, res: Response) => {
 
 }
 
-export function isLogged(isLogged: any) {
+export const isLogged = (req: Request, res: Response) => {
     const oauth2 = Oauth2ClientManager.getInstance().getOauth2Client();
     if (oauth2.credentials) {
-        isLogged.json({ isLogged: true });
+        res.json({ isLogged: true });
     } else {
-        isLogged.json({ isLogged: false });
+        res.json({ isLogged: false });
     }
 }

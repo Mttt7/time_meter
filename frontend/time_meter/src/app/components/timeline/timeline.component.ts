@@ -70,6 +70,7 @@ export class TimelineComponent {
         type: "bar",
         height: 350,
         stacked: true,
+        foreColor: '#DDDDDD',
         toolbar: {
           show: true
         },
@@ -95,10 +96,12 @@ export class TimelineComponent {
           dataLabels: {
             total: {
               enabled: true,
+              offsetY: -10,
               style: {
-                color: 'rgb(146, 135, 135)',
-                fontSize: '13px',
-                fontWeight: 900
+                color: 'white',
+                fontSize: '15px',
+                fontWeight: 500,
+                fontFamily: 'Tilt Neon, sans-serif',
               }
             }
           }
@@ -110,7 +113,8 @@ export class TimelineComponent {
       },
       legend: {
         position: "right",
-        offsetY: 40
+        offsetY: 40,
+
       },
       fill: {
         opacity: 1

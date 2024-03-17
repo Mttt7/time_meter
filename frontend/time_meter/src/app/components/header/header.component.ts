@@ -9,13 +9,31 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
 
+  userLogged = false;
+
 
   constructor(private googleService: GoogleCalendarService,
     private authService: AuthService,
   ) { }
 
+  ngOnInit() {
+    this.isUserLogged();
+  }
+
+
   login() {
     this.authService.login();
+  }
+
+  isUserLogged() {
+    this.authService.isUserLogged().subscribe((res: any) => {
+
+      this.userLogged = res.isLogged;
+    });
+  }
+
+  logout() {
+
   }
 
 }

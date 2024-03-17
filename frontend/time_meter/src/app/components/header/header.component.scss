@@ -1,4 +1,21 @@
 .main {
-    height: 5vh;
+    height: 7vh;
     width: 100vw;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+
+
+}
+
+.hero {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }

@@ -1,8 +1,52 @@
 .main {
     width: 65vw;
-    height: 50vh;
-    background-color: rgba(128, 128, 128, 0.37);
+    height: 43vh;
+    background-color: #161718;
+
+    border-radius: 12px;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    font-family: "Tilt Neon", sans-serif;
 
 }
 
-.calendar {}
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+.active-calendars {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.all-calendars {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .calendar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .calendar-summary {
+            margin-right: auto;
+        }
+    }
+}
+
+.calendar {
+    color: white;
+
+}
