@@ -15,6 +15,7 @@ import {
 } from "ng-apexcharts";
 import { GoogleCalendarService } from '../../services/google-calendar.service';
 import { Calendar } from '../../models/calendar';
+import { CurrentDateService } from '../../services/current-date.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -34,39 +35,37 @@ export type ChartOptions = {
 })
 export class TimelineComponent {
 
+
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
   calendars: Calendar[] = []
   scope = 'week'
-  currentDate = "2024-03-11"
+  currentDate: Date = new Date();
 
   series: any = []
   categories: any = []
 
   loading = true;
 
-  constructor(private googleCalendarService: GoogleCalendarService) {
 
-    this.chartOptions = {
-      series: [
-        {
-          name: "PRODUCT A",
-          data: [44, 55, 41, 67, 22, 43]
-        },
-        {
-          name: "PRODUCT B",
-          data: [13, 23, 20, 8, 13, 27]
-        },
-        {
-          name: "PRODUCT C",
-          data: [11, 17, 15, 15, 21, 14]
-        },
-        {
-          name: "PRODUCT D",
-          data: [21, 7, 25, 13, 22, 8]
-        }
-      ],
+
+  constructor(private googleCalendarService: GoogleCalendarService,
+    private currentDS: CurrentDateService) {
+    this.chartOptions = this.getPristineChartsOptions();
+  }
+
+  ngOnInit() {
+    this.getActiveCalendars();
+    this.currentDS.currentDate.subscribe((date) => {
+      this.currentDate = date;
+      this.populateChart();
+    });
+  }
+
+  getPristineChartsOptions(): Partial<ChartOptions> {
+    return {
+      series: [],
       chart: {
         type: "bar",
         height: 350,
@@ -92,7 +91,17 @@ export class TimelineComponent {
       ],
       plotOptions: {
         bar: {
-          horizontal: false
+          horizontal: false,
+          dataLabels: {
+            total: {
+              enabled: true,
+              style: {
+                color: 'rgb(146, 135, 135)',
+                fontSize: '13px',
+                fontWeight: 900
+              }
+            }
+          }
         }
       },
       xaxis: {
@@ -106,13 +115,8 @@ export class TimelineComponent {
       fill: {
         opacity: 1
       }
+
     };
-
-
-  }
-
-  ngOnInit() {
-    this.getActiveCalendars();
   }
 
   getActiveCalendars() {
@@ -128,12 +132,16 @@ export class TimelineComponent {
 
 
   populateChart() {
-    let categories = this.getCategories(this.currentDate, this.scope);
-    this.chartOptions.xaxis!.categories = categories;
+    let categories = this.getCategories(this.currentDate.toISOString(), this.scope);
+
+    if (this.chartOptions) {
+      this.chartOptions.xaxis!.categories = categories;
+    }
+    this.series = [];
 
     this.loading = true;
 
-    const observables = this.calendars.map(calendar => this.googleCalendarService.getTime(calendar.id, this.scope, this.currentDate));
+    const observables = this.calendars.map(calendar => this.googleCalendarService.getTime(calendar.id, this.scope, this.currentDate.toISOString()));
 
     forkJoin(observables).subscribe(results => {
       results.forEach((res, index) => {
@@ -199,7 +207,9 @@ export class TimelineComponent {
     return `${year}-${month}-${day}`;
   }
 
-
+  onDateChanged() {
+    throw new Error('Method not implemented.');
+  }
 
 
 

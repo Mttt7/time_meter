@@ -1,4 +1,5 @@
 <div class="main">
+    <app-week-picker (onDateChange)="onDateChanged()" *ngIf="!loading"></app-week-picker>
 
     <div id="chart" *ngIf="!loading">
         <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!"

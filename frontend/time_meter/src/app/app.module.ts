@@ -15,6 +15,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { WeekPickerComponent } from './components/week-picker/week-picker.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ActiveCalendarsComponent,
     TimelineComponent,
     GoalPreviewComponent,
-    HeaderComponent
+    HeaderComponent,
+    WeekPickerComponent
   ],
   imports: [
     BrowserModule,
