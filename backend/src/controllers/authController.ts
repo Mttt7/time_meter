@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { google } from 'googleapis';
 import * as userService from '../services/userService.js';
 import Oauth2ClientManager from '../utils/oauth2ClientManager.js';
+import { oauth2 } from 'googleapis/build/src/apis/oauth2/index.js';
 
 
 export const getAuthURL = (req: Request, res: Response) => {
@@ -44,7 +45,16 @@ export const handleCallback = (req: Request, res: Response) => {
             userService.findOrCreateUser(email);
         }
         )
-        res.send('Successfully logged in');
+        res.redirect('http://localhost:4200');
     });
 
+}
+
+export function isLogged(isLogged: any) {
+    const oauth2 = Oauth2ClientManager.getInstance().getOauth2Client();
+    if (oauth2.credentials) {
+        isLogged.json({ isLogged: true });
+    } else {
+        isLogged.json({ isLogged: false });
+    }
 }

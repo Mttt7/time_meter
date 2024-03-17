@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { google } from 'googleapis';
 import Oauth2ClientManager from '../utils/oauth2ClientManager.js';
 import * as userService from '../services/userService.js';
+import { object } from 'webidl-conversions';
 
 export const getCalendars = async (req: Request, res: Response) => {
     const oauth2Client = Oauth2ClientManager.getInstance().getOauth2Client();
@@ -17,11 +18,13 @@ export const getCalendars = async (req: Request, res: Response) => {
 
         calendars = await Promise.all(calendars.map(async (calendar: any) => {
             let isActive = await userService.checkIfCalendarActive(calendar.id);
+            if (calendar.accessRole !== 'owner') return null;
             return {
                 ...calendar,
                 active: isActive
             }
         }))
+        calendars = calendars.filter((calendar: any) => calendar !== null);
 
         res.json(calendars);
     });
@@ -78,7 +81,7 @@ export const setCalendarActive = async (req: Request, res: Response) => {
     }
     try {
         await userService.setCalendarActive(String(calendarId));
-        res.send('Success');
+        res.json({ status: 'Success' });
     } catch (err) {
         console.error('Error setting calendar active', err);
         res.send('Error');
@@ -125,11 +128,20 @@ export const getTime = async (req: Request, res: Response) => {
     })
 
     let suffix = 'min'
-    const extractedTime: number[] = events.data.items.map((event: any) => {
+    const extractedTime: any = events.data.items.map((event: any) => {
         if (suffix === 'min') {
             const summary: string = event.summary || '';
             const match = summary.match(/<(\d+)min>/);
-            return match ? parseInt(match[1]) : null;
+            return match ?
+                {
+                    "time": parseInt(match[1]),
+                    "date": event.start.dateTime
+                }
+                :
+                {
+                    "time": 0,
+                    "date": event.start.dateTime
+                };
         } else {
             const summary: string = event.summary || '';
             const match = summary.match(/<(\d+)>/);
@@ -140,5 +152,8 @@ export const getTime = async (req: Request, res: Response) => {
     const totalMinutes = extractedTime.reduce((acc, time) => {
         return acc + time
     }, 0)
-    return res.json({ totalMinutes })
+    return res.json({
+        "time": extractedTime,
+        "totalMinutes": totalMinutes
+    })
 }

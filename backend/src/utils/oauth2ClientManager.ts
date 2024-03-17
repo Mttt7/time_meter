@@ -26,6 +26,10 @@ class Oauth2ClientManager {
     public setCredentials(tokens: Credentials) {
         this.oauth2Client.setCredentials(tokens);
     }
+
+    public getCredentials(): Credentials {
+        return this.oauth2Client.credentials;
+    }
 }
 
 export default Oauth2ClientManager;
